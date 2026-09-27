@@ -20,15 +20,15 @@ export function FinalCta() {
           </Reveal>
           <Reveal delay={80}>
             <p className="measure mt-5 text-lg text-muted">
-              Arte enviada até as {site.cutoff} imprime no mesmo dia. Orçamento na hora pelo WhatsApp, ou
-              deixe seu contato que a gente chama você.
+              No DTF, arte enviada até as {site.cutoff} imprime no mesmo dia. DTF ou Patch 3D TPU:
+              orçamento na hora pelo WhatsApp, ou deixe seu contato que a gente chama você.
             </p>
             <p className="mt-2 font-mono text-[0.65rem] text-faint">
               *Dependendo do tamanho do arquivo e da fila de produção.
             </p>
           </Reveal>
           <Reveal delay={140} className="mt-7">
-            <WhatsAppButton href={whatsappUrl("Olá! Quero imprimir DTF hoje.")}>
+            <WhatsAppButton href={whatsappUrl("Olá! Quero fazer um pedido.")}>
               Falar agora no WhatsApp
             </WhatsAppButton>
           </Reveal>

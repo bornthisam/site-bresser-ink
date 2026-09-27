@@ -1,14 +1,14 @@
-import { Check, Clock, Ruler, Sparkles } from "lucide-react";
-import { site, whatsappUrl } from "@/lib/site";
+import { Check, Clock, Layers, Sparkles } from "lucide-react";
+import { whatsappUrl } from "@/lib/site";
 import { LinkButton, WhatsAppButton } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Section";
 import { SectionBackground, blobPresets, gradients } from "@/components/ui/SectionBackground";
 import { QuoteForm } from "./QuoteForm";
 
 const chips = [
-  { icon: Clock, label: "Pronto até 24h" },
-  { icon: Ruler, label: "Filme de 58 cm" },
-  { icon: Sparkles, label: "Sem pedido mínimo" },
+  { icon: Layers, label: "DTF Têxtil · DTF UV · Patch 3D" },
+  { icon: Clock, label: "DTF pronto até 24h" },
+  { icon: Sparkles, label: "Patch com relevo 3D" },
 ];
 
 const benefits = [
@@ -30,13 +30,15 @@ export function Hero() {
 
       <div className="shell relative grid items-start gap-10 pt-10 pb-14 sm:pt-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12 lg:pt-16 lg:pb-20">
         <div>
-          <Eyebrow>Impressão DTF em São Paulo · Têxtil e UV</Eyebrow>
+          <Eyebrow>São Paulo · DTF Têxtil, DTF UV e Patch 3D TPU</Eyebrow>
           <h1 className="text-[2.6rem] leading-[0.98] font-extrabold sm:text-5xl lg:text-6xl">
-            Impressão DTF por metro, <span className="text-gradient-cmyk">pronta no mesmo dia</span>
+            DTF e Patch 3D para quem vende{" "}
+            <span className="text-gradient-cmyk">personalizado</span>
           </h1>
           <p className="measure mt-5 text-lg leading-relaxed text-muted sm:text-xl">
-            Produção rápida para o seu negócio não parar. DTF Têxtil para camiseta, moletom e
-            boné; DTF UV para copo, garrafa e acrílico. Você vende, a gente imprime.
+            Três serviços num fornecedor só: DTF Têxtil para camiseta, moletom e boné; DTF UV para
+            copo, garrafa e acrílico; Patch 3D TPU emborrachado com a sua logo em alto relevo. Você
+            vende, a gente produz.
           </p>
 
           <ul className="mt-6 flex flex-wrap gap-2.5">
@@ -52,7 +54,7 @@ export function Hero() {
           </ul>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <WhatsAppButton href={whatsappUrl("Olá! Quero um orçamento de impressão DTF.")}>
+            <WhatsAppButton href={whatsappUrl("Olá! Quero um orçamento.")}>
               Pedir orçamento no WhatsApp
             </WhatsAppButton>
             <LinkButton href="#precos" variant="ghost">

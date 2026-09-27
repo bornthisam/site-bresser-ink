@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
 import { MobileCtaBar } from "@/components/layout/MobileCtaBar";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 const sora = Sora({
@@ -25,9 +26,9 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Impressão DTF em São Paulo | DTF Têxtil e UV por metro — DTF Turbo",
+  title: `DTF Têxtil, DTF UV e Patch 3D TPU em São Paulo — ${site.name}`,
   description:
-    "Impressão DTF Têxtil e DTF UV por metro para estamparias, confecções, lojas de brindes e personalização. Pronto no mesmo dia.",
+    "DTF Têxtil e DTF UV por metro e Patch 3D TPU emborrachado com a sua logo, para estamparias, confecções, lojas de brindes e marcas.",
 };
 
 // Aplica o tema salvo antes da primeira pintura, evitando flash de tema errado.
@@ -43,7 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col" suppressHydrationWarning>
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

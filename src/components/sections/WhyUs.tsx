@@ -1,5 +1,5 @@
 import { Clock, Headset, Layers, MapPin, Palette, Ruler } from "lucide-react";
-import { deliveryOptions, features } from "@/lib/site";
+import { deliveryOptions, features, site } from "@/lib/site";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section } from "@/components/ui/Section";
 
@@ -16,9 +16,9 @@ export function WhyUs() {
   return (
     <Section
       heading={{
-        eyebrow: "Por que a DTF Turbo",
+        eyebrow: `Por que a ${site.name}`,
         title: "Feito para quem vende personalização",
-        lead: "Estamparias, confecções, lojas de brindes e empreendedores que precisam de prazo curto e preço certo.",
+        lead: "Estamparias, confecções, lojas de brindes, marcas e empreendedores que precisam de prazo curto e preço certo.",
       }}
     >
       <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

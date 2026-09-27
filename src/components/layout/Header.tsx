@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { navLinks, site, whatsappUrl } from "@/lib/site";
 import { Logo } from "@/components/ui/Brand";
@@ -24,13 +25,13 @@ export function Header() {
 
         <nav aria-label="Seções da página" className="hidden items-center gap-1 lg:flex">
           {navLinks.map((l) => (
-            <a
+            <Link
               key={l.href}
               href={l.href}
               className="rounded-pill px-3.5 py-2 text-sm text-muted transition hover:text-ink"
             >
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -62,14 +63,14 @@ export function Header() {
         <div id="menu-mobile" className="relative border-t border-line bg-bg lg:hidden">
           <nav className="shell flex flex-col py-4" aria-label="Menu">
             {navLinks.map((l) => (
-              <a
+              <Link
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
                 className="border-b border-line py-3 font-display text-lg font-semibold last:border-0"
               >
                 {l.label}
-              </a>
+              </Link>
             ))}
             <div className="mt-4 flex items-center gap-3">
               <ThemeToggle />

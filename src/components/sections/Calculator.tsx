@@ -3,7 +3,7 @@
 import { Calculator as CalcIcon, Trophy } from "lucide-react";
 import { useMemo, useState } from "react";
 import { estimate } from "@/lib/calculator";
-import { brl, products, whatsappUrl } from "@/lib/site";
+import { brl, productLabel, products, whatsappUrl, type Product } from "@/lib/site";
 import { WhatsAppButton } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Reveal } from "@/components/ui/Reveal";
@@ -24,6 +24,14 @@ export function Calculator() {
   const [qty, setQty] = useState("20");
 
   const product = products.find((p) => p.id === productId)!;
+  const maxSide = product.kind === "patch" ? product.maxSize : Infinity;
+  const visiblePresets = presets.filter((p) => Math.max(p.w, p.h) <= maxSide);
+
+  function selectProduct(p: Product) {
+    setProductId(p.id);
+    // Patch tem pedido mínimo: já ajusta a quantidade para não abrir com erro.
+    if (p.kind === "patch" && Number(qty) < p.minQty) setQty(String(p.minQty));
+  }
   const result = useMemo(
     () => estimate(product, Number(w), Number(h), Math.floor(Number(qty))),
     [product, w, h, qty],
@@ -32,10 +40,10 @@ export function Calculator() {
   const message = result.ok
     ? [
         `Olá! Fiz a simulação no site:`,
-        `DTF ${product.name} · arte ${w}×${h} cm · ${qty} peças`,
+        `${productLabel(product)} · arte ${w}×${h} cm · ${qty} peças`,
         `Melhor opção: ${result.best.label} (${result.best.detail}) = ${brl(result.best.total)}`,
       ].join("\n")
-    : `Olá! Quero um orçamento de DTF ${product.name}.`;
+    : `Olá! Quero um orçamento de ${productLabel(product)}.`;
 
   return (
     <Section
@@ -45,7 +53,7 @@ export function Calculator() {
       heading={{
         eyebrow: "Calculadora de metragem",
         title: "Descubra quanto vai custar antes de pedir",
-        lead: "Informe o tamanho da estampa e quantas peças vai fazer. A calculadora encaixa as artes no filme, compara folha e metro e já monta a mensagem do seu orçamento.",
+        lead: "Informe o tamanho da estampa e quantas peças vai fazer. A calculadora encaixa as artes no filme, calcula a metragem pela tabela e já monta a mensagem do seu orçamento.",
       }}
     >
       <Reveal delay={120} className="mt-10">
@@ -59,11 +67,11 @@ export function Calculator() {
               <h3 className="font-display text-lg font-bold">Calculadora de metragem</h3>
             </div>
             <p className="mt-2 text-sm text-muted">
-              Diga o tamanho da arte e quantas peças você vai fazer. A gente encaixa no filme e mostra o
-              formato mais barato.
+              Diga o tamanho da arte e quantas peças você vai fazer. A gente encaixa no filme e mostra a
+              metragem e o preço pela tabela.
             </p>
 
-            <div className="mt-5 flex gap-2" role="tablist" aria-label="Tipo de DTF">
+            <div className="mt-5 flex flex-wrap gap-2" role="tablist" aria-label="Tipo de serviço">
               {products.map((p) => {
                 const active = p.id === productId;
                 return (
@@ -72,21 +80,21 @@ export function Calculator() {
                     type="button"
                     role="tab"
                     aria-selected={active}
-                    onClick={() => setProductId(p.id)}
+                    onClick={() => selectProduct(p)}
                     className={`rounded-pill border px-4 py-2 text-sm font-medium transition ${
                       active
                         ? "border-transparent bg-gradient-cmyk text-on-brand [text-shadow:0_1px_2px_#0006]"
                         : "border-line bg-surface text-muted hover:text-ink"
                     }`}
                   >
-                    DTF {p.name}
+                    {productLabel(p)}
                   </button>
                 );
               })}
             </div>
 
             <div className="mt-4 flex flex-wrap gap-1.5">
-              {presets.map((p) => (
+              {visiblePresets.map((p) => (
                 <button
                   key={p.label}
                   type="button"
@@ -113,7 +121,9 @@ export function Calculator() {
               </FormField>
             </div>
             <p className="mt-2 font-mono text-[0.68rem] text-faint">
-              Largura máxima do filme: {product.filmWidth} cm. Espaço de 1 cm entre artes.
+              {product.kind === "patch"
+                ? `Tamanho máximo: ${product.maxSize} × ${product.maxSize} cm. Pedido mínimo: ${product.minQty} unidades.`
+                : `Largura máxima do filme: ${product.filmWidth} cm. Espaço de 1 cm entre artes.`}
             </p>
           </div>
 

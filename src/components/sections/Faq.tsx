@@ -15,7 +15,7 @@ export function Faq() {
             lead="Não achou a sua? Chama no WhatsApp que a gente responde rápido."
           />
           <div className="mt-6">
-            <WhatsAppButton href={whatsappUrl("Olá! Tenho uma dúvida sobre DTF.")}>
+            <WhatsAppButton href={whatsappUrl("Olá! Tenho uma dúvida.")}>
               Tirar uma dúvida
             </WhatsAppButton>
           </div>

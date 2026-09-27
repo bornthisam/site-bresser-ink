@@ -1,6 +1,7 @@
 "use client";
 
 import { MessageSquareText } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { whatsappUrl } from "@/lib/site";
 import { WhatsAppIcon } from "@/components/ui/icons";
@@ -24,13 +25,13 @@ export function MobileCtaBar() {
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="flex items-center gap-2 px-4 py-3">
-        <a
-          href="#orcamento"
+        <Link
+          href="/#orcamento"
           className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-pill border border-line-2 bg-surface text-sm font-semibold text-ink"
         >
           <MessageSquareText className="h-4 w-4" />
           Pedir orçamento
-        </a>
+        </Link>
         <a
           href={whatsappUrl()}
           target="_blank"

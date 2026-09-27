@@ -54,8 +54,8 @@ export function HowItWorks() {
       blobs={blobPresets.steps}
       heading={{
         eyebrow: "Como funciona",
-        title: "Quatro passos e a estampa está na peça",
-        lead: "Você não precisa ter impressora DTF. Manda a arte, a gente produz e você só aplica.",
+        title: "Quatro passos e a sua arte está na peça",
+        lead: "Você não precisa ter impressora nem máquina de patch. Manda a arte, a gente produz e você só aplica.",
       }}
     >
       <Reveal delay={100} className="mt-10">

@@ -1,13 +1,14 @@
 // Conteúdo e configuração central do site. Edite aqui para trocar textos, preços e contatos.
 
 export const site = {
-  name: "Bresser INK",
+  name: "Bresser Ink",
   company: "38.359.752 LTDA",
   cnpj: "38.359.752/0001-16",
   phone: { label: "(11) 2366-3044", href: "tel:+551123663044" },
   whatsapp: { label: "(11) 2366-3044", number: "551123663044" },
   email: "print@bresser.ink",
   instagram: { handle: "bresser.ink", href: "https://instagram.com/bresser.ink" },
+  tiktok: { handle: "bresser.ink", href: "https://www.tiktok.com/@bresser.ink" },
   address:
     "Rua Bresser, 1526 — Brás, São Paulo – SP, CEP 03053-000",
   mapsHref:
@@ -25,29 +26,32 @@ export function whatsappUrl(message?: string) {
 }
 
 export const navLinks = [
-  { href: "#servicos", label: "O que fazemos" },
-  { href: "#precos", label: "Preços" },
-  { href: "#calculadora", label: "Calculadora" },
-  { href: "#como-funciona", label: "Como funciona" },
-  { href: "#duvidas", label: "Dúvidas" },
+  // "/#…" em vez de "#…": os links também funcionam fora da home (ex.: /politicas).
+  { href: "/#servicos", label: "O que fazemos" },
+  { href: "/#precos", label: "Preços" },
+  { href: "/#calculadora", label: "Calculadora" },
+  { href: "/#como-funciona", label: "Como funciona" },
+  { href: "/#duvidas", label: "Dúvidas" },
 ];
 
 export const quoteOptions = [
   "DTF Têxtil (camiseta, moletom, boné)",
   "DTF UV (copo, garrafa, acrílico)",
-  "Os dois",
+  "Patch 3D TPU (emborrachado)",
+  "Mais de um serviço",
   "Ainda não sei, quero entender",
 ];
 
 export const stats = [
   { value: "15+", label: "anos no mercado de personalização" },
-  { value: "24h", label: "prazo máximo de produção" },
-  { value: "58 cm", label: "largura do filme têxtil" },
-  { value: "Sem", label: "pedido mínimo para começar" },
+  { value: "3", label: "serviços: DTF Têxtil, DTF UV e Patch 3D TPU" },
+  { value: "24h", label: "prazo máximo de produção do DTF" },
+  { value: "3D", label: "patch emborrachado em alto relevo" },
 ];
 
 export const services = [
   {
+    brand: "dtf",
     name: "Têxtil",
     width: "58 cm de largura",
     tagline: "Para tudo que é tecido",
@@ -61,6 +65,7 @@ export const services = [
     ],
   },
   {
+    brand: "dtf",
     name: "UV",
     width: "30 cm de largura",
     tagline: "Para superfície rígida",
@@ -73,50 +78,96 @@ export const services = [
       "Perfeito para brinde personalizado em lote",
     ],
   },
-];
+  {
+    brand: "patch",
+    name: "Patch 3D TPU",
+    width: "Até 15 × 15 cm",
+    tagline: "Emborrachado em alto relevo",
+    description:
+      "Patch emborrachado em alto relevo com a sua logo ou arte. Acabamento premium para aplicar em camisetas, moletons, bonés, bolsas e acessórios.",
+    bullets: [
+      "Relevo 3D com toque emborrachado",
+      "Feito sob medida com a sua logo ou arte",
+      "Aplica com prensa em tecido, boné e acessórios",
+      "Resistente à lavagem e ao uso diário",
+    ],
+  },
+] as const;
 
 // ---------------------------------------------------------------- Preços
 
-export type Sheet = { name: string; w: number; h: number; price: number };
 export type Tier = { min: number; max: number; price: number };
-export type Product = {
+
+/** Faixa de preço por metro: vale a partir de `from` metros (inclusive). */
+export type MeterTier = { from: number; price: number };
+
+/** DTF: vendido por metro linear de filme (meio metro para pedidos pequenos). */
+export type DtfProduct = {
+  kind: "dtf";
   id: "textil" | "uv";
   name: string;
   filmWidth: number;
-  sheets: Sheet[];
-  tiers: Tier[];
+  halfMeterPrice: number; // preço fechado de 0,5 m
+  meterTiers: MeterTier[]; // em ordem crescente de `from`
 };
+
+/** Patch: vendido por unidade, com preço por faixa de quantidade. */
+export type PatchProduct = {
+  kind: "patch";
+  id: "patch";
+  name: string;
+  maxSize: number; // lado máximo do patch, em cm
+  refSize: number; // lado do patch de referência da tabela (refSize × refSize cm)
+  minQty: number;
+  tiers: Tier[]; // price = preço por unidade no tamanho de referência
+};
+
+export type Product = DtfProduct | PatchProduct;
+
+export const productLabel = (p: Product) => (p.kind === "dtf" ? `DTF ${p.name}` : p.name);
 
 export const products: Product[] = [
   {
+    kind: "dtf",
     id: "textil",
     name: "Têxtil",
     filmWidth: 58,
-    sheets: [
-      { name: "A3", w: 29, h: 42, price: 24.9 },
-      { name: "meio metro", w: 58, h: 50, price: 29.9 },
-    ],
-    tiers: [
-      { min: 1, max: 6, price: 59.9 },
-      { min: 6, max: 10, price: 49.9 },
-      { min: 11, max: 20, price: 44.9 },
-      { min: 21, max: 50, price: 39.9 },
+    halfMeterPrice: 40,
+    meterTiers: [
+      { from: 1, price: 70 },
+      { from: 5, price: 65 },
+      { from: 10, price: 60 },
+      { from: 25, price: 55 },
+      { from: 50, price: 50 },
     ],
   },
   {
+    kind: "dtf",
     id: "uv",
     name: "UV",
     filmWidth: 30,
-    sheets: [
-      { name: "A4", w: 21, h: 29.7, price: 24.9 },
-      { name: "A3", w: 29, h: 42, price: 36.9 },
-      { name: "meio metro", w: 30, h: 50, price: 44.9 },
+    halfMeterPrice: 45,
+    meterTiers: [
+      { from: 1, price: 85 },
+      { from: 10, price: 80 },
+      { from: 25, price: 75 },
+      { from: 50, price: 70 },
     ],
+  },
+  {
+    kind: "patch",
+    id: "patch",
+    name: "Patch 3D TPU",
+    maxSize: 15,
+    refSize: 5,
+    minQty: 50,
+    // ⚠️ PREÇOS FICTÍCIOS (placeholder): troque os valores de `price` abaixo pelos preços reais.
+    // `price` é o valor por unidade de um patch de 5 × 5 cm (refSize). Patches maiores são
+    // calculados proporcionalmente à área em src/lib/calculator.ts (função estimatePatch).
     tiers: [
-      { min: 1, max: 6, price: 84.9 },
-      { min: 6, max: 10, price: 79.9 },
-      { min: 11, max: 29, price: 74.9 },
-      { min: 30, max: 50, price: 69.9 },
+      { min: 50, max: 100, price: 6.9 },
+      { min: 101, max: 500, price: 4.9 },
+      { min: 501, max: 1000, price: 3.9 },
     ],
   },
 ];
@@ -137,11 +188,11 @@ export const brl = (v: number) =>
 export const steps = [
   {
     title: "Manda a arte",
-    text: "PNG com fundo transparente, 300 dpi, no tamanho final. Pelo WhatsApp mesmo. Se tiver dúvida no arquivo, a gente confere antes de imprimir, sem cobrar nada.",
+    text: "PNG com fundo transparente, 300 dpi, no tamanho final. Para patch, a sua logo em vetor ou PNG. Pelo WhatsApp mesmo: a gente confere o arquivo antes de produzir, sem cobrar nada.",
   },
   {
-    title: "A gente imprime",
-    text: "Arte aprovada até as 14h sai no mesmo dia, dependendo do tamanho do arquivo. No máximo em até 24h.",
+    title: "A gente produz",
+    text: "DTF com arte aprovada até as 14h sai no mesmo dia, no máximo em até 24h. Patch 3D TPU com prazo combinado no orçamento.",
   },
   {
     title: "Retira ou recebe",
@@ -149,15 +200,15 @@ export const steps = [
   },
   {
     title: "Aplica e vende",
-    text: "Têxtil: prensa a 150 °C por 15 segundos, com peel frio. UV: descola, posiciona e pressiona. Sem máquina cara, sem desperdício.",
+    text: "Têxtil: prensa a 150 °C por 15 segundos, com peel frio. UV: descola, posiciona e pressiona. Patch: aplica com prensa na peça. Sem máquina cara, sem desperdício.",
   },
 ];
 
 export const features = [
   {
     icon: "clock",
-    title: "Mesmo dia até as 14h",
-    text: "Arte enviada até as 14h imprime no mesmo dia, dependendo do tamanho do arquivo. Nunca passa de 24h.",
+    title: "DTF no mesmo dia até as 14h",
+    text: "No DTF, arte enviada até as 14h imprime no mesmo dia, dependendo do tamanho do arquivo. Nunca passa de 24h.",
   },
   {
     icon: "ruler",
@@ -166,8 +217,8 @@ export const features = [
   },
   {
     icon: "layers",
-    title: "Têxtil e UV no mesmo lugar",
-    text: "Camiseta, moletom, boné, copo, garrafa e acrílico. Um fornecedor só para tudo que você personaliza.",
+    title: "Três serviços no mesmo lugar",
+    text: "DTF Têxtil, DTF UV e Patch 3D TPU. Camiseta, boné, copo, garrafa e patch com a sua logo: um fornecedor só para tudo que você personaliza.",
   },
   {
     icon: "palette",
@@ -210,24 +261,32 @@ export const faqs = [
     a: "DTF significa Direct to Film: a arte é impressa em um filme especial com tinta e pó adesivo. Você recebe o filme pronto e transfere para a peça com prensa térmica. Funciona em algodão, poliéster, misto, nylon e outros tecidos, em cores claras e escuras.",
   },
   {
-    q: "Qual a diferença entre DTF Têxtil e DTF UV?",
-    a: "O DTF Têxtil é para tecidos e aplica com calor. O DTF UV é um adesivo de alta definição para superfícies rígidas (copos, garrafas, acrílico, vidro, madeira, metal) e aplica sem calor: descola, posiciona e pressiona.",
+    q: "Qual a diferença entre DTF Têxtil, DTF UV e Patch 3D TPU?",
+    a: "O DTF Têxtil é uma estampa para tecidos e aplica com calor. O DTF UV é um adesivo de alta definição para superfícies rígidas (copos, garrafas, acrílico, vidro, madeira, metal) e aplica sem calor. O Patch 3D TPU é um patch emborrachado em alto relevo, feito com a sua logo ou arte, para aplicar em roupas, bonés e acessórios.",
+  },
+  {
+    q: "O que é o Patch 3D TPU?",
+    a: "É um patch emborrachado em TPU com relevo 3D, produzido sob medida com a sua logo ou arte. Dá um acabamento premium e marcante em camisetas, moletons, bonés, bolsas e acessórios, e aguenta lavagem e uso diário.",
   },
   {
     q: "Qual é o prazo de entrega?",
-    a: "Arte enviada até as 14h imprime no mesmo dia, dependendo do tamanho do arquivo. No máximo em até 24h. A gente avisa no WhatsApp assim que ficar pronto.",
+    a: "No DTF, arte enviada até as 14h imprime no mesmo dia, dependendo do tamanho do arquivo, e no máximo em até 24h. No Patch 3D TPU, o prazo depende da quantidade e é combinado no orçamento. A gente avisa no WhatsApp assim que ficar pronto.",
   },
   {
     q: "Tem pedido mínimo?",
-    a: "Sem pedido mínimo. Dá para pedir uma folha A4 ou A3 para testar a qualidade e depois fechar metragem maior.",
+    a: "No DTF, não: dá para pedir meio metro para testar a qualidade e depois fechar metragem maior. No Patch 3D TPU, o pedido mínimo é de 50 unidades.",
   },
   {
     q: "Como devo enviar a arte?",
-    a: "PNG com fundo transparente, 300 dpi, no tamanho final de aplicação. Também aceitamos PDF, AI e CDR. Manda pelo WhatsApp que a gente confere antes de imprimir, sem custo.",
+    a: "Para DTF, PNG com fundo transparente, 300 dpi, no tamanho final de aplicação. Para patch, de preferência a logo em vetor (PDF, AI ou CDR). Manda pelo WhatsApp que a gente confere antes de produzir, sem custo.",
   },
   {
     q: "Como aplico o DTF Têxtil?",
     a: "Prensa térmica a 150 °C por 15 segundos, com pressão média. Deixe esfriar e puxe o filme (peel frio). Para fixar melhor, prense mais 5 segundos com papel manteiga por cima.",
+  },
+  {
+    q: "Como aplico o Patch 3D TPU?",
+    a: "O patch é aplicado com prensa térmica na roupa, no boné ou no acessório. Junto com o pedido, a gente passa a temperatura, o tempo e a pressão certos para o tecido da sua peça.",
   },
   {
     q: "Vocês entregam fora de São Paulo?",

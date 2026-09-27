@@ -1,9 +1,10 @@
 import { Mail, MapPin, Phone } from "lucide-react";
+import Link from "next/link";
 import { navLinks, site, whatsappUrl } from "@/lib/site";
 import { Logo } from "@/components/ui/Brand";
 import { WhatsAppButton } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Section";
-import { InstagramIcon } from "@/components/ui/icons";
+import { InstagramIcon, TikTokIcon } from "@/components/ui/icons";
 
 export function Footer() {
   return (
@@ -12,11 +13,11 @@ export function Footer() {
         <div>
           <Logo />
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted">
-            Impressão DTF por metro. Você vende, a gente produz.
+            DTF e Patch 3D TPU. Você vende, a gente produz.
           </p>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
-            Impressão DTF Têxtil e DTF UV por metro para estamparias, confecções, lojas de brindes e
-            personalização.
+            DTF Têxtil, DTF UV e Patch 3D TPU emborrachado para estamparias, confecções, lojas de
+            brindes e marcas.
           </p>
           <a
             href={site.instagram.href}
@@ -26,22 +27,30 @@ export function Footer() {
           >
             <InstagramIcon className="h-4 w-4" /> @{site.instagram.handle}
           </a>
+          <a
+            href={site.tiktok.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 flex w-fit items-center gap-2 text-sm text-muted transition hover:text-ink"
+          >
+            <TikTokIcon className="h-4 w-4" /> @{site.tiktok.handle}
+          </a>
         </div>
 
         <div>
-          <Eyebrow>Nesta página</Eyebrow>
+          <Eyebrow>Navegação</Eyebrow>
           <ul className="space-y-2.5 text-sm">
             {navLinks.map((l) => (
               <li key={l.href}>
-                <a href={l.href} className="text-muted transition hover:text-ink">
+                <Link href={l.href} className="text-muted transition hover:text-ink">
                   {l.label}
-                </a>
+                </Link>
               </li>
             ))}
             <li>
-              <a href="#" className="text-muted transition hover:text-ink">
-                Política de privacidade
-              </a>
+              <Link href="/politicas" className="text-muted transition hover:text-ink">
+                Políticas da empresa
+              </Link>
             </li>
           </ul>
         </div>

@@ -4,7 +4,7 @@ import { SectionBackground, blobPresets, gradients } from "@/components/ui/Secti
 export function Stats() {
   return (
     <section
-      aria-label="Números da DTF Turbo"
+      aria-label={`Números da ${site.name}`}
       className="relative isolate z-10 overflow-hidden rounded-t-[2rem] border-b border-line md:-mt-[12vh] md:pt-[12vh] sm:rounded-t-[3rem]"
     >
       <SectionBackground gradient={gradients.soft} blobs={blobPresets.corners} grid={false} />

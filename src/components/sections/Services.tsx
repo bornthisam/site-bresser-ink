@@ -5,6 +5,9 @@ import { WhatsAppButton } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section } from "@/components/ui/Section";
 
+const serviceLabel = (s: (typeof services)[number]) =>
+  s.brand === "dtf" ? `DTF ${s.name}` : s.name;
+
 export function Services() {
   return (
     <Section
@@ -13,19 +16,20 @@ export function Services() {
         eyebrow: "O que fazemos",
         title: (
           <>
-            Dois serviços, <span className="text-gradient-cmyk">um fornecedor só</span>
+            Três serviços, <span className="text-gradient-cmyk">um fornecedor só</span>
           </>
         ),
-        lead: "Se o seu cliente pede camiseta e copo no mesmo pedido, dá para resolver tudo aqui.",
+        lead: "Se o seu cliente pede camiseta, copo e patch com a logo no mesmo pedido, dá para resolver tudo aqui.",
       }}
     >
-      <div className="mt-12 grid gap-6 lg:grid-cols-2">
+      <div className="mt-12 grid gap-6 lg:grid-cols-3">
         {services.map((s, i) => (
           <Reveal key={s.name} delay={i * 100}>
             <article className="card flex h-full flex-col p-7">
               <div className="flex items-baseline justify-between gap-4">
                 <h3 className="font-display text-2xl font-extrabold">
-                  <DtfWord /> <span className="text-ink">{s.name}</span>
+                  {s.brand === "dtf" && <><DtfWord />{" "}</>}
+                  <span className="text-ink">{s.name}</span>
                 </h3>
                 <span className="font-mono text-[0.68rem] tracking-[0.12em] text-faint uppercase">
                   {s.width}
@@ -45,11 +49,11 @@ export function Services() {
               </ul>
               <div className="mt-auto pt-6">
                 <WhatsAppButton
-                  href={whatsappUrl(`Olá! Quero um orçamento de DTF ${s.name}.`)}
+                  href={whatsappUrl(`Olá! Quero um orçamento de ${serviceLabel(s)}.`)}
                   size="md"
                   className="w-full sm:w-auto"
                 >
-                  Orçar DTF {s.name}
+                  Orçar {serviceLabel(s)}
                 </WhatsAppButton>
               </div>
             </article>
